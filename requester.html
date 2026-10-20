@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Pranav Fetch Computation Demo</title>
+<style>body{font-family:Arial;max-width:600px;margin:50px auto}input,button{padding:10px;margin:8px}#result{margin-top:20px;padding:14px;background:#eef}</style></head>
+<body><h1>Pranav uses a fetch request</h1><label>X: <input id="x" type="number" value="3" step="any"></label>
+<label>Y: <input id="y" type="number" value="4" step="any"></label>
+<button onclick="compute()">Invoke computation on Server</button><div id="result">Result appears here</div>
+<script>
+function compute(){
+  const x = document.getElementById('x').value;
+  const y = document.getElementById('y').value;
+  const result = document.getElementById('result');
+  if (x === '' || y === '') { result.textContent = 'Please enter both numbers.'; return; }
+  const url = `http://127.0.0.1:3001/?x=${encodeURIComponent(x)}&y=${encodeURIComponent(y)}`;
+  fetch(url).then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.text(); })
+    .then(text => { result.textContent = text; })
+    .catch(error => { result.textContent = `Request failed: ${error.message}`; });
+}
+</script></body></html>
